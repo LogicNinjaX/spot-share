@@ -35,7 +35,7 @@ public class ParkerController {
         this.jwtUtil = jwtUtil;
     }
 
-    @PostMapping("/parker/register")
+    @PostMapping("/parkers/register")
     public String registerParker(@RequestBody RegisterDto registerDto){
         UserDto userDto = modelMapper.map(registerDto, UserDto.class);
         userDto.setRole(Role.PARKER);
@@ -45,7 +45,7 @@ public class ParkerController {
     }
 
 
-    @PostMapping("/parker/login")
+    @PostMapping("/parkers/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginDto loginDto) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         String token = jwtUtil.generateToken(loginDto.getUsername());

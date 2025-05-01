@@ -35,7 +35,7 @@ public class OwnerController {
         this.jwtUtil = jwtUtil;
     }
 
-    @PostMapping("/owner/register")
+    @PostMapping("/owners/register")
     public String registerParker(@RequestBody RegisterDto registerDto){
         UserDto userDto = modelMapper.map(registerDto, UserDto.class);
         userDto.setRole(Role.OWNER);
@@ -44,7 +44,7 @@ public class OwnerController {
     }
 
 
-    @PostMapping("/owner/login")
+    @PostMapping("/owners/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginDto loginDto) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         String token = jwtUtil.generateToken(loginDto.getUsername());
