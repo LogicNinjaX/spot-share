@@ -24,8 +24,10 @@ public class ParkingSpot {
 
     private double pricePerHour;
 
+    @Enumerated(EnumType.STRING)
     private VehicleType vehicleType;
 
+    @Enumerated(EnumType.STRING)
     private ParkingStatus parkingStatus;
 
     @CreationTimestamp
