@@ -2,11 +2,14 @@ package com.example.spot_share.security;
 
 import com.example.spot_share.repository.UserRepository;
 import com.example.spot_share.util.exception.UserNotFoundException;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -24,10 +27,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         com.example.spot_share.entity.User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("user not found with username: "+username));
 
-        return User.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .roles(user.getRole().name())
-                .build();
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+
+        return new CustomUserDetails(
+                user.getUserId(),
+                user.getUsername(),
+                user.getPassword(),
+                user.getRole(),
+                user.getCreatedAt(),
+                user.getUpdatedAt(),
+                authorities);
     }
 }
