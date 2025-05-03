@@ -4,9 +4,7 @@ package com.example.spot_share.controller;
 import com.example.spot_share.enums.Role;
 import com.example.spot_share.security.JwtUtil;
 import com.example.spot_share.service.UserService;
-import com.example.spot_share.util.dto.LoginDto;
-import com.example.spot_share.util.dto.RegisterDto;
-import com.example.spot_share.util.dto.UserDto;
+import com.example.spot_share.util.dto.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,12 +21,13 @@ import java.util.Map;
 @RequestMapping("/api/v1")
 public class OwnerController {
 
-    private UserService userService;
-    private ModelMapper modelMapper;
-    private AuthenticationManager authenticationManager;
-    private JwtUtil jwtUtil;
+    private final UserService userService;
+    private final ModelMapper modelMapper;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-    public OwnerController(UserService userService, ModelMapper modelMapper, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+    public OwnerController(UserService userService, ModelMapper modelMapper, AuthenticationManager authenticationManager,
+                           JwtUtil jwtUtil) {
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.authenticationManager = authenticationManager;
