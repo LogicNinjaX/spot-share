@@ -15,3 +15,12 @@ spring:
         format_sql: true
         highlight_sql: true
     show-sql: true
+
+  cache:
+    type: redis
+  data:
+    redis:
+      host: ${redis-host}
+      password: ${redis-pass}
+      port: ${redis-port}
+      timeout: 60000
