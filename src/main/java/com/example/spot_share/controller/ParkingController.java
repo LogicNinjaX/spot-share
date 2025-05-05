@@ -5,10 +5,9 @@ import com.example.spot_share.service.ParkingSpotService;
 import com.example.spot_share.util.dto.ParkingSpotDto;
 import com.example.spot_share.util.dto.RegisterParkingSpot;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -22,11 +21,16 @@ public class ParkingController {
         this.parkingSpotService = parkingSpotService;
     }
 
-    @PostMapping("/parking-spaces")
+    @PostMapping("/parking-spots")
     public String saveParkingSpot(@RequestBody RegisterParkingSpot registerParkingSpot){
         ParkingSpotDto parkingSpotDto = modelMapper.map(registerParkingSpot, ParkingSpotDto.class);
         parkingSpotDto.setParkingStatus(ParkingStatus.AVAILABLE);
         parkingSpotService.saveParkingSpot(parkingSpotDto);
         return "saved";
+    }
+
+    @GetMapping("/parking-spots/my")
+    public List<?> getParkingList(@RequestParam int pageNumber, @RequestParam int pageSize){
+        return parkingSpotService.getParkingList(pageNumber, pageSize);
     }
 }
