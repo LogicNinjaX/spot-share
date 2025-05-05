@@ -6,10 +6,15 @@ import com.example.spot_share.repository.ParkingSpotRepository;
 import com.example.spot_share.security.SecurityUtils;
 import com.example.spot_share.service.ParkingSpotService;
 import com.example.spot_share.util.dto.ParkingSpotDto;
+import com.example.spot_share.util.dto.ParkingSpotDtoWithoutBookings;
 import jakarta.persistence.EntityManager;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,4 +41,12 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
 
         return parkingSpotRepository.save(parkingSpot);
     }
+
+    @Override
+    public List<ParkingSpotDtoWithoutBookings> getParkingList(int pageNumber, int pageSize) {
+        UUID currentUserId = SecurityUtils.getCurrentUserId();
+        return parkingSpotRepository.getParkingList(currentUserId, PageRequest.of(pageNumber-1, pageSize)).stream().toList();
+    }
+
+
 }
