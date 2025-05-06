@@ -2,12 +2,17 @@ package com.example.spot_share.controller;
 
 import com.example.spot_share.enums.ParkingStatus;
 import com.example.spot_share.service.ParkingSpotService;
+import com.example.spot_share.util.api_response.UpdateParkingSpotRequest;
+import com.example.spot_share.util.api_response.UpdatedParkingSpotResponse;
 import com.example.spot_share.util.dto.ParkingSpotDto;
 import com.example.spot_share.util.dto.RegisterParkingSpot;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -29,8 +34,16 @@ public class ParkingController {
         return "saved";
     }
 
+    @PreAuthorize("hasRole('OWNER')")
     @GetMapping("/parking-spots/my")
     public List<?> getParkingList(@RequestParam int pageNumber, @RequestParam int pageSize){
         return parkingSpotService.getParkingList(pageNumber, pageSize);
+    }
+
+    @PreAuthorize("hasRole('OWNER')")
+    @PutMapping("/parking-spots/{parking-id}")
+    public ResponseEntity<?> updateParkingSpot(@RequestBody UpdateParkingSpotRequest updateRequest, @PathVariable("parking-id") UUID parkingId){
+        ParkingSpotDto parkingSpotDto = parkingSpotService.updateParkingSpot(parkingId,updateRequest);
+        return ResponseEntity.ok(modelMapper.map(parkingSpotDto, UpdatedParkingSpotResponse.class));
     }
 }
