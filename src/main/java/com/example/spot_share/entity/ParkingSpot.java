@@ -17,7 +17,7 @@ public class ParkingSpot {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID parkingId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User owner; // owner data
 
     private String location;
