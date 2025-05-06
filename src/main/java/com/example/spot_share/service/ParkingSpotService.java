@@ -1,10 +1,12 @@
 package com.example.spot_share.service;
 
 import com.example.spot_share.entity.ParkingSpot;
+import com.example.spot_share.util.api_response.UpdateParkingSpotRequest;
 import com.example.spot_share.util.dto.ParkingSpotDtoWithoutBookings;
 import com.example.spot_share.util.dto.ParkingSpotDto;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ParkingSpotService {
 
@@ -12,4 +14,6 @@ public interface ParkingSpotService {
 
 
     List<ParkingSpotDtoWithoutBookings> getParkingList(int pageNumber, int pageSize);
+
+    ParkingSpotDto updateParkingSpot(UUID parkingId, UpdateParkingSpotRequest request);
 }
