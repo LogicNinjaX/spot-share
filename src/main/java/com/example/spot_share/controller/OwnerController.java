@@ -1,11 +1,14 @@
 package com.example.spot_share.controller;
 
 
+import com.example.spot_share.entity.User;
 import com.example.spot_share.enums.Role;
 import com.example.spot_share.security.JwtUtil;
 import com.example.spot_share.service.UserService;
+import com.example.spot_share.util.api_response.ApiResponse;
 import com.example.spot_share.util.dto.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,11 +38,12 @@ public class OwnerController {
     }
 
     @PostMapping("/owners/register")
-    public String registerParker(@RequestBody RegisterDto registerDto){
+    public ResponseEntity<ApiResponse<User>> registerParker(@RequestBody RegisterDto registerDto){
         UserDto userDto = modelMapper.map(registerDto, UserDto.class);
         userDto.setRole(Role.OWNER);
-        userService.saveUser(userDto);
-        return "success...";
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(true, "owner registration successful", userService.saveUser(userDto)));
     }
 
 
