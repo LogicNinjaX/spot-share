@@ -8,7 +8,7 @@ public class ApiResponse<T> {
     private T data;
     private LocalDateTime timestamp;
 
-    public ApiResponse(Boolean success, String message, T data, LocalDateTime timestamp) {
+    public ApiResponse(Boolean success, String message, T data) {
         this.success = success;
         this.message = message;
         this.data = data;

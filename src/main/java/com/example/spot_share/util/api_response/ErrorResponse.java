@@ -10,7 +10,7 @@ public class ErrorResponse<T> {
     private T data;
     private LocalDateTime timestamp;
 
-    public ErrorResponse(Boolean success, String message, Integer error_code, T data, LocalDateTime timestamp) {
+    public ErrorResponse(Boolean success, String message, Integer error_code, T data) {
         this.success = success;
         this.message = message;
         this.error_code = error_code;
