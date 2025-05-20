@@ -68,8 +68,12 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
         parkingSpotDto.setParkingStatus(updatedParkingSpot.getParkingStatus());
         parkingSpotDto.setCreatedAt(updatedParkingSpot.getCreatedAt());
         parkingSpotDto.setUpdatedAt(updatedParkingSpot.getUpdatedAt());
-
         return parkingSpotDto;
+    }
+
+    @Override
+    public void deleteParking(UUID parkingId) {
+        parkingSpotRepository.deleteById(parkingId);
     }
 
 

@@ -16,4 +16,6 @@ public interface ParkingSpotService {
     List<ParkingSpotDtoWithoutBookings> getParkingList(int pageNumber, int pageSize);
 
     ParkingSpotDto updateParkingSpot(UUID parkingId, UpdateParkingSpotRequest request);
+
+    void deleteParking(UUID parkingId);
 }
