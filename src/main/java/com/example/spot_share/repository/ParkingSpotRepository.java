@@ -1,7 +1,9 @@
 package com.example.spot_share.repository;
 
 import com.example.spot_share.entity.ParkingSpot;
+import com.example.spot_share.enums.ParkingStatus;
 import com.example.spot_share.util.dto.ParkingSpotDtoWithoutBookings;
+import org.hibernate.annotations.Parent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -20,6 +22,9 @@ public interface ParkingSpotRepository extends JpaRepository<ParkingSpot, UUID> 
 
     @EntityGraph(attributePaths = {})
     @Query("SELECT p FROM ParkingSpot p WHERE p.parkingId = :parkingId")
-    Optional<ParkingSpot> getParkingSpot(@Param("parkingId") UUID parkingId);  // // No associations fetched
+    Optional<ParkingSpot> getParkingSpot(@Param("parkingId") UUID parkingId);// // No associations fetched
 
+    @Query("SELECT new com.example.spot_share.util.dto.ParkingSpotDtoWithoutBookings(p.parkingId, p.location, p.pricePerHour, p.vehicleType, p.parkingStatus, p.createdAt, p.updatedAt)" +
+            "FROM ParkingSpot p WHERE p.parkingStatus = :parkingStatus")
+    Page<ParkingSpotDtoWithoutBookings> getParkingListByStatus(@Param("parkingStatus") ParkingStatus status, Pageable pageable);
 }

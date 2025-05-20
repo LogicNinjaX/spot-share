@@ -2,6 +2,7 @@ package com.example.spot_share.service.impl;
 
 import com.example.spot_share.entity.ParkingSpot;
 import com.example.spot_share.entity.User;
+import com.example.spot_share.enums.ParkingStatus;
 import com.example.spot_share.repository.ParkingSpotRepository;
 import com.example.spot_share.security.SecurityUtils;
 import com.example.spot_share.service.ParkingSpotService;
@@ -76,5 +77,9 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
         parkingSpotRepository.deleteById(parkingId);
     }
 
+    @Override
+    public List<ParkingSpotDtoWithoutBookings> getParkingListByStatus(int pageNumber, int pageSize, ParkingStatus status) {
+        return parkingSpotRepository.getParkingListByStatus(status, PageRequest.of(pageNumber-1, pageSize)).toList();
+    }
 
 }
