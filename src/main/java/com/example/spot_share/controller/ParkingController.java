@@ -48,12 +48,21 @@ public class ParkingController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true,"data retrieved successfully", parkingList));
     }
 
-    @PreAuthorize("hasRole('OWNER')")
+
     @PutMapping("/parking-spots/{parking-id}")
     public ResponseEntity<ApiResponse<?>> updateParkingSpot(@RequestBody UpdateParkingSpotRequest updateRequest, @PathVariable("parking-id") UUID parkingId){
         ParkingSpotDto parkingSpotDto = parkingSpotService.updateParkingSpot(parkingId,updateRequest);
         UpdatedParkingSpotResponse updateResponse = modelMapper.map(parkingSpotDto, UpdatedParkingSpotResponse.class);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ApiResponse<>(true, "parking details updated successfully", updateResponse));
+    }
+
+    @PreAuthorize("hasRole('OWNER')")
+    @DeleteMapping("/parking-spots/{parking-id}")
+    public ResponseEntity<ApiResponse<?>> deleteParkingSpot(@PathVariable("parking-id") UUID parkingId){
+        parkingSpotService.deleteParking(parkingId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ApiResponse<>(true, "deleted successfully", null));
     }
 }
