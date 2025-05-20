@@ -65,4 +65,14 @@ public class ParkingController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ApiResponse<>(true, "deleted successfully", null));
     }
+
+
+    @GetMapping("/parking-spots")
+    public ResponseEntity<ApiResponse<?>> getAvailableParkingSpot(@RequestParam(defaultValue = "1") int pageNumber, @RequestParam(defaultValue = "10") int pageSize){
+        List<ParkingSpotDtoWithoutBookings> availableParkingSpot = parkingSpotService
+                .getParkingListByStatus(pageNumber, pageSize, ParkingStatus.AVAILABLE);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ApiResponse<>(true, "data retrieved successfully", availableParkingSpot));
+    }
 }
