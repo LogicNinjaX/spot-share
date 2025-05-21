@@ -8,12 +8,15 @@ import com.example.spot_share.repository.BookingRepository;
 import com.example.spot_share.repository.ParkingSpotRepository;
 import com.example.spot_share.security.SecurityUtils;
 import com.example.spot_share.service.BookingService;
+import com.example.spot_share.util.dto.BookingWithoutParker;
 import com.example.spot_share.util.exception.ParkingException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -48,5 +51,11 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = new Booking(user, parkingSpot);
 
         return bookingRepository.save(booking);
+    }
+
+    @Override
+    public List<BookingWithoutParker> getBookingWithoutParker(int pageNumber, int pageSize) {
+        UUID currentUserId = SecurityUtils.getCurrentUserId();
+        return bookingRepository.getBookingWithoutParker(currentUserId, PageRequest.of(pageNumber-1, pageSize)).toList();
     }
 }
