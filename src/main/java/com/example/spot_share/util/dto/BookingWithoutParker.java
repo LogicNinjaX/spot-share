@@ -1,7 +1,5 @@
 package com.example.spot_share.util.dto;
 
-import com.example.spot_share.entity.ParkingSpot;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
