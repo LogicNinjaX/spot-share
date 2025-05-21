@@ -8,11 +8,15 @@ import com.example.spot_share.repository.BookingRepository;
 import com.example.spot_share.repository.ParkingSpotRepository;
 import com.example.spot_share.security.SecurityUtils;
 import com.example.spot_share.service.BookingService;
+import com.example.spot_share.util.dto.BookingDetails;
 import com.example.spot_share.util.dto.BookingWithoutParker;
+import com.example.spot_share.util.dto.ParkingDetails;
+import com.example.spot_share.util.exception.BookingException;
 import com.example.spot_share.util.exception.ParkingException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -57,5 +61,37 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingWithoutParker> getBookingWithoutParker(int pageNumber, int pageSize) {
         UUID currentUserId = SecurityUtils.getCurrentUserId();
         return bookingRepository.getBookingWithoutParker(currentUserId, PageRequest.of(pageNumber-1, pageSize)).toList();
+    }
+
+    @Override
+    public List<BookingDetails> getBookingDetails(int pageNumber, int pageSize, UUID parkingId) {
+        return bookingRepository.getBookingDetails(parkingId, PageRequest.of(pageNumber-1, pageSize)).toList();
+    }
+
+    @Override
+    @Transactional
+    public boolean cancelBooking(UUID bookingId) {
+        ParkingDetails parkingDetails = parkingSpotRepository.getParkingDetailsByBookingId(bookingId)
+                .orElseThrow(() -> new ParkingException("parking space not found"));
+
+        try{
+        int deactivated = bookingRepository.deactivateBooking(bookingId);
+        int updated = parkingSpotRepository.updateParkingStatus(parkingDetails.parkingId(), ParkingStatus.AVAILABLE);
+
+        if (deactivated <= 0) {
+            throw new BookingException("Failed to deactivate booking");
+        }
+
+        if (updated <= 0) {
+            throw new ParkingException("Failed to update parking spot status");
+        }
+
+        return true;
+
+        } catch (DataAccessException dae) {
+            throw new BookingException("Database error during booking cancellation: "+dae);
+        } catch (RuntimeException ex) {
+            throw new BookingException("Unexpected error during booking cancellation: "+ ex);
+        }
     }
 }
