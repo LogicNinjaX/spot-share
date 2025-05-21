@@ -2,15 +2,13 @@ package com.example.spot_share.repository;
 
 import com.example.spot_share.entity.ParkingSpot;
 import com.example.spot_share.enums.ParkingStatus;
+import com.example.spot_share.util.dto.ParkingDetails;
 import com.example.spot_share.util.dto.ParkingSpotDtoWithoutBookings;
 import jakarta.persistence.LockModeType;
 import org.hibernate.annotations.Parent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
@@ -33,4 +31,11 @@ public interface ParkingSpotRepository extends JpaRepository<ParkingSpot, UUID> 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT p FROM ParkingSpot p WHERE p.parkingId = :parkingId")
     Optional<ParkingSpot> findByIdForUpdate(@Param("parkingId") UUID parkingId);
+
+    @Modifying
+    @Query("UPDATE ParkingSpot p SET p.parkingStatus = :parkingStatus WHERE p.parkingId = :parkingId")
+    int updateParkingStatus(@Param("parkingId") UUID parkingId, @Param("parkingStatus") ParkingStatus parkingStatus);
+
+    @Query("SELECT new com.example.spot_share.util.dto.ParkingDetails(p.parkingId, p.location, p.pricePerHour, p.vehicleType, p.parkingStatus, p.createdAt, p.updatedAt) FROM ParkingSpot p WHERE p.bookings.bookingId = :bookingId")
+    Optional<ParkingDetails> getParkingDetailsByBookingId(@Param("bookingId") UUID bookingId);
 }
