@@ -36,6 +36,6 @@ public interface ParkingSpotRepository extends JpaRepository<ParkingSpot, UUID> 
     @Query("UPDATE ParkingSpot p SET p.parkingStatus = :parkingStatus WHERE p.parkingId = :parkingId")
     int updateParkingStatus(@Param("parkingId") UUID parkingId, @Param("parkingStatus") ParkingStatus parkingStatus);
 
-    @Query("SELECT new com.example.spot_share.util.dto.ParkingDetails(p.parkingId, p.location, p.pricePerHour, p.vehicleType, p.parkingStatus, p.createdAt, p.updatedAt) FROM ParkingSpot p WHERE p.bookings.bookingId = :bookingId")
+    @Query("SELECT new com.example.spot_share.util.dto.ParkingDetails(p.parkingId, p.location, p.pricePerHour, p.vehicleType, p.parkingStatus, p.createdAt, p.updatedAt) FROM ParkingSpot p JOIN p.bookings b WHERE b.bookingId = :bookingId")
     Optional<ParkingDetails> getParkingDetailsByBookingId(@Param("bookingId") UUID bookingId);
 }
