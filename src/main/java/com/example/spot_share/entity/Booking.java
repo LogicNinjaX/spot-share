@@ -24,8 +24,13 @@ public class Booking {
 
     private boolean isActive = true;
 
+    public Booking() {
+    }
 
-
+    public Booking(User parker, ParkingSpot parkingSpot) {
+        this.parker = parker;
+        this.parkingSpot = parkingSpot;
+    }
 
     public UUID getBookingId() {
         return bookingId;
