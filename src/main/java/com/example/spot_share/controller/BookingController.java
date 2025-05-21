@@ -8,6 +8,7 @@ import com.example.spot_share.util.api_response.BookingResponse;
 import com.example.spot_share.util.dto.BookingDetails;
 import com.example.spot_share.util.dto.BookingWithoutParker;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -57,5 +58,14 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ApiResponse<>(true, "data retrieved successfully", bookingDetails));
 
+    }
+
+    @PreAuthorize("hasRole('PARKER')")
+    @PutMapping("/bookings/{booking-id}/cancel")
+    public ResponseEntity<ApiResponse<?>> cancelBooking(@PathVariable("booking-id") UUID bookingId){
+        boolean result = bookingService.cancelBooking(bookingId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ApiResponse<>(true, "booking cancellation successful", null));
     }
 }
