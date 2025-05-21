@@ -5,6 +5,7 @@ import com.example.spot_share.entity.ParkingSpot;
 import com.example.spot_share.service.BookingService;
 import com.example.spot_share.util.api_response.ApiResponse;
 import com.example.spot_share.util.api_response.BookingResponse;
+import com.example.spot_share.util.dto.BookingDetails;
 import com.example.spot_share.util.dto.BookingWithoutParker;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -44,5 +45,17 @@ public class BookingController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ApiResponse<>(true, "data retrieved successfully", bookingWithoutParkers));
+    }
+
+    @PreAuthorize("hasRole('OWNER')")
+    @GetMapping("/bookings/owner/{parking-id}")
+    public ResponseEntity<ApiResponse<List<BookingDetails>>> getBookingDetails(@PathVariable("parking-id") UUID parkingId,
+                                                                               @RequestParam(defaultValue = "1") int pageNumber,
+                                                                               @RequestParam(defaultValue = "10") int pageSize){
+        List<BookingDetails> bookingDetails = bookingService.getBookingDetails(pageNumber, pageSize, parkingId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ApiResponse<>(true, "data retrieved successfully", bookingDetails));
+
     }
 }
