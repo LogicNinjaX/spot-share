@@ -18,6 +18,10 @@ public class Review {
     @ManyToOne
     private ParkingSpot parkingSpot;
 
+    private String comment;
+
+    private int rating;
+
 
     public UUID getReviewId() {
         return reviewId;
@@ -41,5 +45,21 @@ public class Review {
 
     public void setParkingSpot(ParkingSpot parkingSpot) {
         this.parkingSpot = parkingSpot;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 }
