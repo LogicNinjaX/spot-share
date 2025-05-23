@@ -68,4 +68,14 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ApiResponse<>(true, "booking cancellation successful", null));
     }
+
+
+    @PreAuthorize("hasAnyRole('PARKER', 'OWNER')")
+    @GetMapping("/bookings/{booking-id}")
+    public ResponseEntity<ApiResponse<BookingDetails>> getBookingDetails(@PathVariable("booking-id") UUID bookingId){
+        BookingDetails bookingDetails = bookingService.getBookingDetails(bookingId);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ApiResponse<>(true, "data retrieved successfully", bookingDetails));
+    }
 }
