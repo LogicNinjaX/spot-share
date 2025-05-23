@@ -17,4 +17,5 @@ public interface BookingService {
 
     boolean cancelBooking(UUID bookingId);
 
+    BookingDetails getBookingDetails(UUID bookingId);
 }

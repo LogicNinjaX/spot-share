@@ -94,4 +94,9 @@ public class BookingServiceImpl implements BookingService {
             throw new BookingException("Unexpected error during booking cancellation: "+ ex);
         }
     }
+
+    @Override
+    public BookingDetails getBookingDetails(UUID bookingId) {
+        return bookingRepository.getBookingDetails(bookingId).orElseThrow(() -> new BookingException("booking details not found"));
+    }
 }
