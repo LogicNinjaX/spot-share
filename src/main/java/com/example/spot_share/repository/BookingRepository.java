@@ -3,7 +3,6 @@ package com.example.spot_share.repository;
 import com.example.spot_share.entity.Booking;
 import com.example.spot_share.util.dto.BookingDetails;
 import com.example.spot_share.util.dto.BookingWithoutParker;
-import com.example.spot_share.util.dto.ParkingDetails;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,5 +26,8 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     @Modifying
     @Query("UPDATE Booking b SET b.isActive = false WHERE b.bookingId = :bookingId")
     int deactivateBooking(@Param("bookingId") UUID bookingId);
+
+    @Query("SELECT new com.example.spot_share.util.dto.BookingDetails(b.bookingId, b.parker.username, b.parkingSpot.parkingId, b.parkingSpot.location, b.parkingSpot.vehicleType, b.bookedAt, b.isActive) FROM Booking b WHERE b.bookingId = :bookingId")
+    Optional<BookingDetails> getBookingDetails(@Param("bookingId") UUID bookingId);
 
 }
