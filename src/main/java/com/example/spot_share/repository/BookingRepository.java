@@ -30,4 +30,15 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     @Query("SELECT new com.example.spot_share.util.dto.BookingDetails(b.bookingId, b.parker.username, b.parkingSpot.parkingId, b.parkingSpot.location, b.parkingSpot.vehicleType, b.bookedAt, b.isActive) FROM Booking b WHERE b.bookingId = :bookingId")
     Optional<BookingDetails> getBookingDetails(@Param("bookingId") UUID bookingId);
 
+    @Query("SELECT COUNT(b) FROM Booking b WHERE b.isActive = :status AND b.parker.userId = :userId AND b.parkingSpot.parkingId = :parkingId")
+    long isBookingActive(@Param("status") boolean status, @Param("userId") UUID userId, @Param("parkingId") UUID parkingId);
+
+    @Query("""
+    SELECT b FROM Booking b
+    JOIN FETCH b.parker
+    JOIN FETCH b.parkingSpot
+    WHERE b.bookingId = :bookingId
+    """)
+    Optional<Booking> findWithUserById(UUID bookingId);
+
 }
