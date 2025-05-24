@@ -2,7 +2,10 @@ package com.example.spot_share.entity;
 
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -22,6 +25,21 @@ public class Review {
 
     private int rating;
 
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    public Review() {
+    }
+
+    public Review(User user, ParkingSpot parkingSpot, String comment, int rating) {
+        this.user = user;
+        this.parkingSpot = parkingSpot;
+        this.comment = comment;
+        this.rating = rating;
+    }
 
     public UUID getReviewId() {
         return reviewId;
@@ -61,5 +79,21 @@ public class Review {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
