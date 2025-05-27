@@ -31,6 +31,7 @@ public class ParkingController {
         this.parkingSpotService = parkingSpotService;
     }
 
+    @PreAuthorize("hasRole('OWNER')")
     @PostMapping("/parking-spots")
     public ResponseEntity<ApiResponse<SavedParkingResponse>> saveParkingSpot(@RequestBody RegisterParkingSpot registerParkingSpot){
         ParkingSpotDto parkingSpotDto = modelMapper.map(registerParkingSpot, ParkingSpotDto.class);
@@ -49,6 +50,7 @@ public class ParkingController {
     }
 
 
+    @PreAuthorize("hasRole('OWNER')")
     @PutMapping("/parking-spots/{parking-id}")
     public ResponseEntity<ApiResponse<?>> updateParkingSpot(@RequestBody UpdateParkingSpotRequest updateRequest, @PathVariable("parking-id") UUID parkingId){
         ParkingSpotDto parkingSpotDto = parkingSpotService.updateParkingSpot(parkingId,updateRequest);

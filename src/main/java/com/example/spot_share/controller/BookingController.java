@@ -8,7 +8,6 @@ import com.example.spot_share.util.api_response.BookingResponse;
 import com.example.spot_share.util.dto.BookingDetails;
 import com.example.spot_share.util.dto.BookingWithoutParker;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

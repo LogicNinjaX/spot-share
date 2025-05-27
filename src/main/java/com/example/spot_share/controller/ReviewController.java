@@ -8,6 +8,7 @@ import com.example.spot_share.util.api_response.ReviewResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ public class ReviewController {
         this.modelMapper = modelMapper;
     }
 
+    @PreAuthorize("hasRole('PARKER')")
     @PostMapping("/reviews")
     public ResponseEntity<ApiResponse<ReviewResponse>> submitReview(@RequestBody ReviewRequest reviewRequest){
         Review review = reviewService.saveReview(reviewRequest);
