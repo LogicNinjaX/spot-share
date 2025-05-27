@@ -185,7 +185,7 @@ Spot Share is a Spring Boot-based backend application that enables parking space
 
    ---
 
-## 📂 Folder Structure (Suggested)
+## 📂 Folder Structure
 
 ```
 src/
