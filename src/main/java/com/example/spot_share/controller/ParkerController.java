@@ -8,6 +8,7 @@ import com.example.spot_share.util.api_response.ApiResponse;
 import com.example.spot_share.util.dto.LoginDto;
 import com.example.spot_share.util.dto.RegisterDto;
 import com.example.spot_share.util.dto.UserDto;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class ParkerController {
     }
 
     @PostMapping("/parkers/register")
-    public ResponseEntity<ApiResponse<User>> registerParker(@RequestBody RegisterDto registerDto){
+    public ResponseEntity<ApiResponse<User>> registerParker(@Valid @RequestBody RegisterDto registerDto){
         UserDto userDto = modelMapper.map(registerDto, UserDto.class);
         userDto.setRole(Role.PARKER);
 
@@ -49,7 +50,7 @@ public class ParkerController {
 
 
     @PostMapping("/parkers/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginDto loginDto) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         String token = jwtUtil.generateToken(loginDto.getUsername());
         return ResponseEntity.ok(Collections.singletonMap("token", token));

@@ -10,6 +10,7 @@ import com.example.spot_share.util.api_response.UpdatedParkingSpotResponse;
 import com.example.spot_share.util.dto.ParkingSpotDto;
 import com.example.spot_share.util.dto.ParkingSpotDtoWithoutBookings;
 import com.example.spot_share.util.dto.RegisterParkingSpot;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class ParkingController {
 
     @PreAuthorize("hasRole('OWNER')")
     @PostMapping("/parking-spots")
-    public ResponseEntity<ApiResponse<SavedParkingResponse>> saveParkingSpot(@RequestBody RegisterParkingSpot registerParkingSpot){
+    public ResponseEntity<ApiResponse<SavedParkingResponse>> saveParkingSpot(@Valid @RequestBody RegisterParkingSpot registerParkingSpot){
         ParkingSpotDto parkingSpotDto = modelMapper.map(registerParkingSpot, ParkingSpotDto.class);
         parkingSpotDto.setParkingStatus(ParkingStatus.AVAILABLE);
         ParkingSpot parkingSpot = parkingSpotService.saveParkingSpot(parkingSpotDto);
