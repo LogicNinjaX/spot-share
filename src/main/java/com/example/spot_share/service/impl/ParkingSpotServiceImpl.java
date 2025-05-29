@@ -54,7 +54,7 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
 
         ParkingSpot currentParkingSpot = parkingSpotRepository.getParkingSpot(parkingId).map(parkingSpot -> {
             parkingSpot.setLocation(request.getLocation());
-            parkingSpot.setPricePerHour(request.getPricePerHour());
+            parkingSpot.setPricePerHour(request.getPricePerHour()); me
             parkingSpot.setVehicleType(request.getVehicleType());
             parkingSpot.setParkingStatus(request.getParkingStatus());
             return parkingSpot;
