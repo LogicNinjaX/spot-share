@@ -1,11 +1,18 @@
 package com.example.spot_share.util.api_response;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.UUID;
 
 public class ReviewRequest {
 
+    @NotNull(message = "booking id is required")
     private UUID bookingId;
 
+    @Min(value = 1, message = "rate between 0-5")
+    @Max(value = 5, message = "rate between 0-5")
     private int rating;
 
     private String comment;

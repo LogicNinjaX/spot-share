@@ -2,10 +2,15 @@ package com.example.spot_share.util.dto;
 
 import com.example.spot_share.enums.ParkingStatus;
 import com.example.spot_share.enums.VehicleType;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import org.springframework.beans.factory.annotation.Value;
 
 
 public class RegisterParkingSpot {
 
+    @NotEmpty(message = "location is required")
     private String location;
 
     private double pricePerHour;
