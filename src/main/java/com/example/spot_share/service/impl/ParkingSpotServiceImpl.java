@@ -9,6 +9,7 @@ import com.example.spot_share.service.ParkingSpotService;
 import com.example.spot_share.util.api_response.UpdateParkingSpotRequest;
 import com.example.spot_share.util.dto.ParkingSpotDto;
 import com.example.spot_share.util.dto.ParkingSpotDtoWithoutBookings;
+import com.example.spot_share.util.exception.ParkingException;
 import jakarta.persistence.EntityManager;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
@@ -57,7 +58,7 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
             parkingSpot.setVehicleType(request.getVehicleType());
             parkingSpot.setParkingStatus(request.getParkingStatus());
             return parkingSpot;
-        }).orElseThrow(() -> new RuntimeException("parking spot not found with id:"+parkingId));
+        }).orElseThrow(() -> new ParkingException("parking spot not found with id:"+parkingId));
 
         ParkingSpot updatedParkingSpot = parkingSpotRepository.save(currentParkingSpot); // after mapping
 
