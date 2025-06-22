@@ -65,10 +65,9 @@ Spot Share is a Spring Boot-based backend application that enables parking space
 
 | Method | Endpoint       | Description               | Access     |
 |--------|----------------|---------------------------|------------|
-| POST   | `/owners/register` | Register a new owner        | Public     |
-| POST   | `/parkers/register` | Register a new parker        | Public     |
-| POST   | `/owners/login`    | Login and receive JWT      | Public     |
-| POST   | `/parkers/login` | Register a new owner        | Public     |
+| POST   | `auth/owners/register` | Register a new owner        | Public     |
+| POST   | `auth/parkers/register` | Register a new parker        | Public     |
+| POST   | `auth/login`    | Login and receive JWT      | Public     |
 
 ---
 
