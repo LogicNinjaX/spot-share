@@ -9,9 +9,9 @@ import java.util.UUID;
 
 public interface BookingService {
 
-    Booking saveBooking(UUID parkingId);
+    Booking saveBooking(UUID userId, UUID parkingId);
 
-    List<BookingWithoutParker> getBookingWithoutParker(int pageNumber, int pageSize);
+    List<BookingWithoutParker> getBookingWithoutParker(UUID userId, int pageNumber, int pageSize);
 
     List<BookingDetails> getBookingDetails(int pageNumber, int pageSize, UUID parkingId);
 

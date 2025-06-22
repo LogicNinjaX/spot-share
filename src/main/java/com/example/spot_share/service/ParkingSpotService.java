@@ -11,9 +11,9 @@ import java.util.UUID;
 
 public interface ParkingSpotService {
 
-    ParkingSpot saveParkingSpot(ParkingSpotDto parkingSpotDto);
+    ParkingSpot saveParkingSpot(UUID userId, ParkingSpotDto parkingSpotDto);
 
-    List<ParkingSpotDtoWithoutBookings> getParkingList(int pageNumber, int pageSize);
+    List<ParkingSpotDtoWithoutBookings> getParkingList(UUID userId, int pageNumber, int pageSize);
 
     ParkingSpotDto updateParkingSpot(UUID parkingId, UpdateParkingSpotRequest request);
 
