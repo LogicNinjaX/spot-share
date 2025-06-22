@@ -4,9 +4,7 @@ import com.example.spot_share.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 public class CustomUserDetails implements UserDetails {
@@ -19,21 +17,14 @@ public class CustomUserDetails implements UserDetails {
 
     private Role role;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
     private Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(UUID userId, String username, String password, Role role, LocalDateTime createdAt,
-                             LocalDateTime updatedAt, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetails(UUID userId, String username, String password, Role role, Collection<? extends GrantedAuthority> authorities) {
 
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.role = role;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.authorities = authorities;
     }
 
@@ -95,22 +86,6 @@ public class CustomUserDetails implements UserDetails {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
