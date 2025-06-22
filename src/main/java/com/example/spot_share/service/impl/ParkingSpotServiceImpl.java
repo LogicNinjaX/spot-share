@@ -4,7 +4,6 @@ import com.example.spot_share.entity.ParkingSpot;
 import com.example.spot_share.entity.User;
 import com.example.spot_share.enums.ParkingStatus;
 import com.example.spot_share.repository.ParkingSpotRepository;
-import com.example.spot_share.security.SecurityUtils;
 import com.example.spot_share.service.ParkingSpotService;
 import com.example.spot_share.util.api_response.UpdateParkingSpotRequest;
 import com.example.spot_share.util.dto.ParkingSpotDto;
@@ -32,9 +31,8 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
     }
 
     @Override
-    public ParkingSpot saveParkingSpot(ParkingSpotDto parkingSpotDto) {
-        UUID currentUserId = SecurityUtils.getCurrentUserId();
-        User currentUser = entityManager.getReference(User.class, currentUserId); // owner
+    public ParkingSpot saveParkingSpot(UUID userId, ParkingSpotDto parkingSpotDto) {
+        User currentUser = entityManager.getReference(User.class, userId); // owner
 
         ParkingSpot parkingSpot = modelMapper.map(parkingSpotDto, ParkingSpot.class);
 
@@ -44,9 +42,8 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
     }
 
     @Override
-    public List<ParkingSpotDtoWithoutBookings> getParkingList(int pageNumber, int pageSize) {
-        UUID currentUserId = SecurityUtils.getCurrentUserId();
-        return parkingSpotRepository.getParkingList(currentUserId, PageRequest.of(pageNumber-1, pageSize)).stream().toList();
+    public List<ParkingSpotDtoWithoutBookings> getParkingList(UUID userId, int pageNumber, int pageSize) {
+        return parkingSpotRepository.getParkingList(userId, PageRequest.of(pageNumber-1, pageSize)).stream().toList();
     }
 
     @Override
@@ -54,7 +51,7 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
 
         ParkingSpot currentParkingSpot = parkingSpotRepository.getParkingSpot(parkingId).map(parkingSpot -> {
             parkingSpot.setLocation(request.getLocation());
-            parkingSpot.setPricePerHour(request.getPricePerHour()); me
+            parkingSpot.setPricePerHour(request.getPricePerHour());
             parkingSpot.setVehicleType(request.getVehicleType());
             parkingSpot.setParkingStatus(request.getParkingStatus());
             return parkingSpot;

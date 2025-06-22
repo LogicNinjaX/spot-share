@@ -6,7 +6,6 @@ import com.example.spot_share.entity.User;
 import com.example.spot_share.enums.ParkingStatus;
 import com.example.spot_share.repository.BookingRepository;
 import com.example.spot_share.repository.ParkingSpotRepository;
-import com.example.spot_share.security.SecurityUtils;
 import com.example.spot_share.service.BookingService;
 import com.example.spot_share.util.dto.BookingDetails;
 import com.example.spot_share.util.dto.BookingWithoutParker;
@@ -14,7 +13,6 @@ import com.example.spot_share.util.dto.ParkingDetails;
 import com.example.spot_share.util.exception.BookingException;
 import com.example.spot_share.util.exception.ParkingException;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -38,10 +36,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public Booking saveBooking(UUID parkingId) {
+    public Booking saveBooking(UUID userId, UUID parkingId) {
 
-        UUID currentUserId = SecurityUtils.getCurrentUserId();
-        User user = entityManager.getReference(User.class, currentUserId);
+        User user = entityManager.getReference(User.class, userId);
 
         ParkingSpot parkingSpot = parkingSpotRepository.findByIdForUpdate(parkingId)
                 .orElseThrow(() -> new ParkingException("parking space not found"));
@@ -58,9 +55,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingWithoutParker> getBookingWithoutParker(int pageNumber, int pageSize) {
-        UUID currentUserId = SecurityUtils.getCurrentUserId();
-        return bookingRepository.getBookingWithoutParker(currentUserId, PageRequest.of(pageNumber-1, pageSize)).toList();
+    public List<BookingWithoutParker> getBookingWithoutParker(UUID userId, int pageNumber, int pageSize) {
+        return bookingRepository.getBookingWithoutParker(userId, PageRequest.of(pageNumber-1, pageSize)).toList();
     }
 
     @Override
