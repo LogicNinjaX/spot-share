@@ -2,6 +2,7 @@ package com.example.spot_share.controller;
 
 import com.example.spot_share.entity.ParkingSpot;
 import com.example.spot_share.enums.ParkingStatus;
+import com.example.spot_share.security.CustomUserDetails;
 import com.example.spot_share.service.ParkingSpotService;
 import com.example.spot_share.util.api_response.ApiResponse;
 import com.example.spot_share.util.api_response.SavedParkingResponse;
@@ -15,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,10 +36,14 @@ public class ParkingController {
 
     @PreAuthorize("hasRole('OWNER')")
     @PostMapping("/parking-spots")
-    public ResponseEntity<ApiResponse<SavedParkingResponse>> saveParkingSpot(@Valid @RequestBody RegisterParkingSpot registerParkingSpot){
+    public ResponseEntity<ApiResponse<SavedParkingResponse>> saveParkingSpot(
+            @Valid @RequestBody RegisterParkingSpot registerParkingSpot,
+            @AuthenticationPrincipal CustomUserDetails user
+    ){
+
         ParkingSpotDto parkingSpotDto = modelMapper.map(registerParkingSpot, ParkingSpotDto.class);
         parkingSpotDto.setParkingStatus(ParkingStatus.AVAILABLE);
-        ParkingSpot parkingSpot = parkingSpotService.saveParkingSpot(parkingSpotDto);
+        ParkingSpot parkingSpot = parkingSpotService.saveParkingSpot(user.getUserId(), parkingSpotDto);
         SavedParkingResponse response = modelMapper.map(parkingSpot, SavedParkingResponse.class);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ApiResponse<>(true, "parking space has been created successfully", response));
@@ -45,8 +51,12 @@ public class ParkingController {
 
     @PreAuthorize("hasRole('OWNER')")
     @GetMapping("/parking-spots/my")
-    public ResponseEntity<ApiResponse<List<ParkingSpotDtoWithoutBookings>>> getParkingList(@RequestParam int pageNumber, @RequestParam int pageSize){
-        List<ParkingSpotDtoWithoutBookings> parkingList =  parkingSpotService.getParkingList(pageNumber, pageSize);
+    public ResponseEntity<ApiResponse<List<ParkingSpotDtoWithoutBookings>>> getParkingList(
+            @RequestParam int pageNumber,
+            @RequestParam int pageSize,
+            @AuthenticationPrincipal CustomUserDetails user
+    ){
+        List<ParkingSpotDtoWithoutBookings> parkingList =  parkingSpotService.getParkingList(user.getUserId(), pageNumber, pageSize);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true,"data retrieved successfully", parkingList));
     }
 
