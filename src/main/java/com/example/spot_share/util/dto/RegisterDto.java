@@ -13,6 +13,9 @@ public class RegisterDto {
     @Size(min = 8, max = 20, message = "password must be 8 characters long")
     private String password;
 
+    @NotEmpty(message = "required field")
+    private String email;
+
 
     public String getUsername() {
         return username;
@@ -28,5 +31,13 @@ public class RegisterDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
