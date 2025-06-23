@@ -1,6 +1,7 @@
 package com.example.spot_share.util.dto;
 
 import com.example.spot_share.enums.Role;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +14,8 @@ public class UserDto {
     private String username;
 
     private String password;
+
+    private String email;
 
     private Role role;
 
@@ -48,6 +51,14 @@ public class UserDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Role getRole() {
